@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033450480110",
+    "project_id": "beercellar-4c2b2",
+    "storage_bucket": "beercellar-4c2b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033450480110:android:ffe05bd6ef17b054ab6eff",
+        "android_client_info": {
+          "package_name": "com.example.beercellar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbkNSLGNjebTZxJao_uuooa67Bh35Ab-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
