@@ -12,17 +12,17 @@ import retrofit2.Call
 
 interface BeerService {
     @GET("beers")
-    fun getAllBooks(): Call<List<Beer>>
+    fun getAllBeers(): Call<List<Beer>>
 
     @GET("beers/{beersId}")
-    fun getBookById(@Path("bookId") bookId: Int): Call<Beer>
+    fun getBeerById(@Path("bookId") bookId: Int): Call<Beer>
 
     @POST("beers")
-    fun saveBook(@Body book: Beer): Call<Beer>
+    fun saveBeer(@Body book: Beer): Call<Beer>
 
     @DELETE("beers/{id}")
-    fun deleteBook(@Path("id") id: Int): Call<Beer>
+    fun deleteBeer(@Path("id") id: Int): Call<Beer>
 
     @PUT("beers/{id}")
-    fun updateBook(@Path("id") id: Int, @Body book: Beer): Call<Beer>
+    fun updateBeer(@Path("id") id: Int, @Body book: Beer): Call<Beer>
 }

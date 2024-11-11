@@ -28,7 +28,7 @@ class BeerRepository {
     }
     fun getAllBeers() {
         isLoadingBeers.value = true
-        beerService.getAllBooks().enqueue(object : Callback<List<Beer>> {
+        beerService.getAllBeers().enqueue(object : Callback<List<Beer>> {
             override fun onResponse(call: Call<List<Beer>>, response: Response<List<Beer>>) {
                 isLoadingBeers.value = false
                 if (response.isSuccessful) {
@@ -38,7 +38,6 @@ class BeerRepository {
                 } else {
                     val message = response.code().toString() + " " + response.message()
                     errorMessage.value = message
-                    Log.d("TUBORG", message)
                 }
             }
 
@@ -46,20 +45,81 @@ class BeerRepository {
                 isLoadingBeers.value = false
                 val message = t.message ?: "No connection to back-end"
                 errorMessage.value = message
-                Log.d("TUBORG", message)
             }
         })
     }
 
-    fun addBeer() {
+    fun addBeer(beer: Beer) {
+        beerService.saveBeer(beer).enqueue(object: Callback<Beer> {
+            override fun onResponse(call: Call<Beer>, response: Response<Beer>) {
+                if (response.isSuccessful) {
+                    val beer = response.body()
+                    if (beer != null) {
+                        beers.value += beer
+                    }
+                } else {
+                    val message = response.code().toString() + " " + response.message()
+                    errorMessage.value = message
+                }
+            }
+
+            override fun onFailure(call: Call<Beer>, t: Throwable) {
+                errorMessage.value = t.message ?: "No connection to back-end"
+            }
+        })
 
     }
 
-    fun deleteBeer() {
+    fun deleteBeer(id: Int) {
+        //TODO: implement deleteBeer
+        beerService.deleteBeer(id).enqueue(object: Callback<Beer> {
+            override fun onResponse(call: Call<Beer>, response: Response<Beer>) {
+                if (response.isSuccessful) {
+                    val beer = response.body()
+                    if (beer != null) {
+                        beers.value -= beer
+                    } else {
+                        val message = response.code().toString() + " " + response.message()
+                        errorMessage.value = message
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<Beer>, t: Throwable) {
+                errorMessage.value = t.message ?: "No connection to back-end"
+            }
+        })
     }
 
     fun sortBeers() {
+        //TODO: implement sortBeers
+    }
 
+    fun updateBeers(beerId: Int, beer: Beer) {
+        beerService.updateBeer(beerId, beer).enqueue(object: Callback<Beer> {
+            override fun onResponse(call: Call<Beer>, response: Response<Beer>) {
+                if (response.isSuccessful) {
+                    val updatedBeer = response.body()
+                    if (updatedBeer != null) {
+                        val index = beers.value.indexOfFirst { it.id == beerId }
+                        if (index != -1) {
+                            beers.value = beers.value.toMutableList().also {
+                                it[index] = updatedBeer
+                            }
+                        } else {
+                            val message = response.code().toString() + " " + response.message()
+                            errorMessage.value = message
+                        }
+                    } else {
+                        val message = response.code().toString() + " " + response.message()
+                        errorMessage.value = message
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Beer>, t: Throwable) {
+                errorMessage.value = t.message ?: "No connection to back-end"
+            }
+        })
     }
 }

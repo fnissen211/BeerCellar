@@ -17,9 +17,11 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -93,6 +95,21 @@ fun BeerListPanel(
                 Text("Filter")
             }
         }
+
+        Row {
+            OutlinedButton(onClick = {
+                sortByTitle(sortNameAscending)
+                sortNameAscending = !sortNameAscending
+            }) {
+                Text(text = if (sortNameAscending) titleDown else titleUp)
+            }
+            TextButton(onClick = {
+                sortByPrice(sortAbvAscending)
+                sortAbvAscending = !sortAbvAscending
+            }) {
+                Text(text = if (sortAbvAscending) priceDown else priceUp)
+            }
+        }
         val orientation = LocalConfiguration.current.orientation
         val columns = if (orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
 
@@ -108,7 +125,6 @@ fun BeerListPanel(
         }
     }
 }
-
 
 @Composable
 fun BeerItem(

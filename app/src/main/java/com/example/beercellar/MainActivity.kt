@@ -64,7 +64,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             BeerList(
                 beers = beers,
                 errorMessage = "",
-                onItemClick = {},
+                onItemClick = { beer -> navController.navigate(NavRoutes.BeerDetails.route + "/${beer.id}") },
                 onItemDelete = {}
             )
         }
