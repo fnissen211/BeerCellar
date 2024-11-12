@@ -11,7 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class BeerRepository {
-    private val url = "https://anbo-restbeer.azurewebsites.net/api/beers"
+    private val url = "https://anbo-restbeer.azurewebsites.net/api/"
 
     private val beerService: BeerService
     val beers: MutableState<List<Beer>> = mutableStateOf(listOf())
@@ -24,8 +24,11 @@ class BeerRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         beerService = build.create(BeerService::class.java)
+
+        Log.d("BeerRepository", "BeerRepository initialized")
         getAllBeers()
     }
+
     fun getAllBeers() {
         isLoadingBeers.value = true
         beerService.getAllBeers().enqueue(object : Callback<List<Beer>> {
@@ -34,6 +37,7 @@ class BeerRepository {
                 if (response.isSuccessful) {
                     val beerList: List<Beer>? = response.body()
                     beers.value = beerList ?: emptyList()
+                    Log.d("BeerService", "Fetched beers: ${beerList?.size}")
                     errorMessage.value = ""
                 } else {
                     val message = response.code().toString() + " " + response.message()
@@ -71,7 +75,6 @@ class BeerRepository {
     }
 
     fun deleteBeer(id: Int) {
-        //TODO: implement deleteBeer
         beerService.deleteBeer(id).enqueue(object: Callback<Beer> {
             override fun onResponse(call: Call<Beer>, response: Response<Beer>) {
                 if (response.isSuccessful) {

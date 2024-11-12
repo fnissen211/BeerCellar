@@ -13,15 +13,21 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,11 +35,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.beercellar.data.model.Beer
+import com.example.beercellar.models.AuthenticationViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeerList(
     beers: List<Beer>,
@@ -43,10 +52,25 @@ fun BeerList(
     onAdd: () -> Unit = {},
     sortByTitle: (up: Boolean) -> Unit = {},
     sortByPrice: (up: Boolean) -> Unit = {},
-    filterByTitle: (String) -> Unit = {}
+    filterByTitle: (String) -> Unit = {},
+    singOut: () -> Unit = {}
 ){
     Scaffold(
         modifier = Modifier,
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF8B8D7B),
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = { Text("Beer") },
+                actions = {
+                    IconButton(onClick = { singOut() }) {
+                        Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = "Log out")
+                    }
+                }
+            )
+        },
 
 
     ) { innerPadding ->
@@ -58,7 +82,8 @@ fun BeerList(
             sortByPrice = sortByPrice,
             onBeerSelected = onItemClick,
             onBeerDeleted = onItemDelete,
-            onFilterByTitle = filterByTitle
+            onFilterByTitle = filterByTitle,
+            addNewBeer = onAdd
         )
     }
 }
@@ -72,9 +97,10 @@ fun BeerListPanel(
     sortByPrice: (up: Boolean) -> Unit,
     onBeerSelected: (Beer) -> Unit,
     onBeerDeleted: (Beer) -> Unit,
-    onFilterByTitle: (String) -> Unit
+    onFilterByTitle: (String) -> Unit,
+    addNewBeer: () -> Unit
     ) {
-    Column {
+    Column(modifier = modifier) {
         val titleUp = "Title \u2191"
         val titleDown = "Title \u2193"
         val priceUp = "Price \u2191"
@@ -82,6 +108,7 @@ fun BeerListPanel(
         var sortNameAscending by remember { mutableStateOf(true) }
         var sortAbvAscending by remember { mutableStateOf(true) }
         var titleFragment by remember { mutableStateOf("") }
+
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
@@ -103,11 +130,14 @@ fun BeerListPanel(
             }) {
                 Text(text = if (sortNameAscending) titleDown else titleUp)
             }
-            TextButton(onClick = {
-                sortByPrice(sortAbvAscending)
+            OutlinedButton(onClick = {
+                sortByTitle(sortAbvAscending)
                 sortAbvAscending = !sortAbvAscending
             }) {
                 Text(text = if (sortAbvAscending) priceDown else priceUp)
+            }
+            OutlinedButton(onClick = { addNewBeer() }) {
+                Text(text = "Add beer")
             }
         }
         val orientation = LocalConfiguration.current.orientation

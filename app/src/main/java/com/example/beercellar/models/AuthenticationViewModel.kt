@@ -4,8 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.beercellar.NavRoutes
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+
+object AuthenticationViewModelProvider {
+    val instance = AuthenticationViewModel()
+}
 
 class AuthenticationViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
@@ -22,7 +27,6 @@ class AuthenticationViewModel : ViewModel() {
                     user = null
                     message = task.exception?.message ?: "Unknown error"
                 }
-
             }
     }
 

@@ -20,7 +20,7 @@ data class Beer(
         style: String,
         abv: Double,
         volume: Double,
-        pictureUrl: String,
+        pictureUrl: String = "",
         howMany: Int) : this(-1, user, brewery, name, style, abv, volume, pictureUrl, howMany)
     override fun toString(): String {
         return "$id  $user  $brewery  $name  $style  $abv  $volume  $pictureUrl  $howMany"

@@ -26,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.beercellar.models.AuthenticationViewModelProvider
 import com.google.firebase.auth.FirebaseUser
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +36,8 @@ fun LoginScreen(
     user: FirebaseUser? = null,
     message: String = "",
     signIn: (email: String, password: String) -> Unit = { _, _ -> },
-    navigateToHome: () -> Unit = {}
+    navigateToHome: () -> Unit = {},
+    navigateToCreateAccount: () -> Unit = {}
 ) {
 
     if (user != null) {
@@ -110,7 +112,7 @@ fun LoginScreen(
             }
 
             Button(onClick = {
-                // TODO go to createacc
+                navigateToCreateAccount()
 
             }) {
                 Text("Create Account")

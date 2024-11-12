@@ -15,14 +15,14 @@ interface BeerService {
     fun getAllBeers(): Call<List<Beer>>
 
     @GET("beers/{beersId}")
-    fun getBeerById(@Path("bookId") bookId: Int): Call<Beer>
+    fun getBeerById(@Path("BeerId") beerId: Int): Call<Beer>
 
     @POST("beers")
-    fun saveBeer(@Body book: Beer): Call<Beer>
+    fun saveBeer(@Body beer: Beer): Call<Beer>
 
     @DELETE("beers/{id}")
     fun deleteBeer(@Path("id") id: Int): Call<Beer>
 
     @PUT("beers/{id}")
-    fun updateBeer(@Path("id") id: Int, @Body book: Beer): Call<Beer>
+    fun updateBeer(@Path("id") id: Int, @Body beer: Beer): Call<Beer>
 }

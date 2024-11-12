@@ -37,10 +37,10 @@ fun BeerDetails(
     var name by remember { mutableStateOf(beer.name) }
     var brewery by remember { mutableStateOf(beer.brewery) }
     var abv by remember { mutableStateOf(beer.abv.toString()) }
-    var volume by remember { mutableStateOf(beer.volume) }
+    var volume by remember { mutableStateOf(beer.volume.toString()) }
     var style by remember { mutableStateOf(beer.style) }
     var pictureUrl by remember { mutableStateOf(beer.pictureUrl) }
-    var howMany by remember { mutableStateOf(beer.howMany) }
+    var howMany by remember { mutableStateOf(beer.howMany.toString()) }
     var user by remember { mutableStateOf(beer.user) }
 
 
@@ -54,16 +54,50 @@ fun BeerDetails(
             ),
             title = { Text("Book details") })}) { innerPadding ->
         Column(modifier = modifier.padding(innerPadding)) {
+            OutlinedTextField(onValueChange = { brewery = it },
+                value = brewery,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Brewery") })
+
             OutlinedTextField(onValueChange = { name = it },
                 value = name,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Title") })
+                label = { Text(text = "Name") })
+
+            OutlinedTextField(onValueChange = { style = it },
+                value = style,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Style") })
+
             OutlinedTextField(onValueChange = { abv = it },
                 value = abv,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Price") })
+                label = { Text(text = "ABV") })
+
+            OutlinedTextField(onValueChange = { volume = it },
+                value = volume,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "volume") })
+
+            OutlinedTextField(onValueChange = { howMany = it },
+                value = howMany,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "How many?") })
+
+            if (pictureUrl != null) {
+                OutlinedTextField(onValueChange = { pictureUrl = it },
+                    value = pictureUrl,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = "Picture") })
+            }
+
             Row(
                 modifier = modifier.fillMaxSize(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -72,8 +106,7 @@ fun BeerDetails(
                     Text("Back")
                 }
                 Button(onClick = {
-                    // TODO validation
-                    val data = Beer(user, brewery, name, style, abv.toDouble(), volume, pictureUrl, howMany)
+                    val data = Beer(user, brewery, name, style, abv.toDouble(), volume.toDouble(), pictureUrl, howMany.toInt())
                     onUpdate(beer.id, data)
                     onNavigateBack()
                 }) {

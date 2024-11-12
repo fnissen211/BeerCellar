@@ -2,7 +2,11 @@ package com.example.beercellar.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -11,7 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.beercellar.models.AuthenticationViewModelProvider
 import com.google.firebase.auth.FirebaseUser
 
 
@@ -21,31 +27,55 @@ fun CreateAccountScreen(
     user: FirebaseUser? = null,
     message: String = "",
     register: (email: String, password: String) -> Unit = { _, _ -> },
-    navigateToHome: () -> Unit = {}
+    navigateToHome: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {}
 ) {
 
     if (user != null) {
         navigateToHome()
     }
 
-    var _username by remember { mutableStateOf("") }
-    var _password by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var emailIsError by remember { mutableStateOf(false) }
+    var passwordIsError by remember { mutableStateOf(false) }
 
     Column(modifier) {
         Text(text = "Create account")
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Email") },
+            isError = emailIsError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        )
+        if (emailIsError) {
+            Text("Invalid email", color = MaterialTheme.colorScheme.error)
+        }
 
-        TextField(value = "Username", onValueChange = {_username = it})
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            isError = passwordIsError,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
 
-        TextField(value = "Password", onValueChange = {_password = it})
+        if (passwordIsError) {
+            Text("Invalid password.", color = MaterialTheme.colorScheme.error)
+        }
 
         Row {
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { register(username, password) }) {
                 Text(text = "Create account")
             }
 
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { navigateToLoginScreen() }) {
                 Text(text = "Already registered?")
             }
+
         }
 
     }
