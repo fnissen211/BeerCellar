@@ -50,8 +50,8 @@ fun BeerList(
     onItemClick: (Beer) -> Unit,
     onItemDelete: (Beer) -> Unit,
     onAdd: () -> Unit = {},
-    sortByTitle: (up: Boolean) -> Unit = {},
-    sortByPrice: (up: Boolean) -> Unit = {},
+    sortByName: (up: Boolean) -> Unit = {},
+    sortByAbv: (up: Boolean) -> Unit = {},
     filterByTitle: (String) -> Unit = {},
     singOut: () -> Unit = {}
 ){
@@ -78,8 +78,8 @@ fun BeerList(
             beers = beers,
             modifier = Modifier.padding(innerPadding),
             errorMessage = errorMessage,
-            sortByTitle = sortByTitle,
-            sortByPrice = sortByPrice,
+            sortByName = sortByName,
+            sortByAbv = sortByAbv,
             onBeerSelected = onItemClick,
             onBeerDeleted = onItemDelete,
             onFilterByTitle = filterByTitle,
@@ -93,18 +93,18 @@ fun BeerListPanel(
     beers: List<Beer>,
     modifier: Modifier = Modifier,
     errorMessage: String,
-    sortByTitle: (up: Boolean) -> Unit,
-    sortByPrice: (up: Boolean) -> Unit,
+    sortByName: (up: Boolean) -> Unit,
+    sortByAbv: (up: Boolean) -> Unit,
     onBeerSelected: (Beer) -> Unit,
     onBeerDeleted: (Beer) -> Unit,
     onFilterByTitle: (String) -> Unit,
     addNewBeer: () -> Unit
     ) {
     Column(modifier = modifier) {
-        val titleUp = "Title \u2191"
-        val titleDown = "Title \u2193"
-        val priceUp = "Price \u2191"
-        val priceDown = "Price \u2193"
+        val nameUp = "Name \u2191"
+        val nameDown = "Name \u2193"
+        val abvUp = "Abv \u2191"
+        val abvDown = "Abv \u2193"
         var sortNameAscending by remember { mutableStateOf(true) }
         var sortAbvAscending by remember { mutableStateOf(true) }
         var titleFragment by remember { mutableStateOf("") }
@@ -125,16 +125,16 @@ fun BeerListPanel(
 
         Row {
             OutlinedButton(onClick = {
-                sortByTitle(sortNameAscending)
+                sortByName(sortNameAscending)
                 sortNameAscending = !sortNameAscending
             }) {
-                Text(text = if (sortNameAscending) titleDown else titleUp)
+                Text(text = if (sortNameAscending) nameDown else nameUp)
             }
             OutlinedButton(onClick = {
-                sortByTitle(sortAbvAscending)
+                sortByAbv(sortAbvAscending)
                 sortAbvAscending = !sortAbvAscending
             }) {
-                Text(text = if (sortAbvAscending) priceDown else priceUp)
+                Text(text = if (sortAbvAscending) abvDown else abvUp)
             }
             OutlinedButton(onClick = { addNewBeer() }) {
                 Text(text = "Add beer")
@@ -204,8 +204,8 @@ fun BeerListPreview() {
         ),
         onItemClick = {},
         onItemDelete = {},
-        sortByTitle = {},
-        sortByPrice = {},
+        sortByName = {},
+        sortByAbv = {},
         filterByTitle = {},
         errorMessage = "Some error message"
     )

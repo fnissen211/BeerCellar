@@ -3,6 +3,7 @@ package com.example.beercellar.data.repository
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.example.beercellar.BeerRepositoryProvider
 import com.example.beercellar.data.model.Beer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -94,10 +95,6 @@ class BeerRepository {
         })
     }
 
-    fun sortBeers() {
-        //TODO: implement sortBeers
-    }
-
     fun updateBeers(beerId: Int, beer: Beer) {
         beerService.updateBeer(beerId, beer).enqueue(object: Callback<Beer> {
             override fun onResponse(call: Call<Beer>, response: Response<Beer>) {
@@ -124,5 +121,25 @@ class BeerRepository {
                 errorMessage.value = t.message ?: "No connection to back-end"
             }
         })
+    }
+
+    fun sortBeersAbv(sorted: Boolean) {
+        val beersList = BeerRepositoryProvider.instance.beers.value ?: emptyList()
+
+        BeerRepositoryProvider.instance.beers.value = if (sorted) {
+            beersList.sortedBy { it.abv }
+        } else {
+            beersList.sortedByDescending { it.abv }
+        }
+    }
+
+    fun sortBeersName(sorted: Boolean) {
+        val beersList = BeerRepositoryProvider.instance.beers.value ?: emptyList()
+
+        BeerRepositoryProvider.instance.beers.value = if (sorted) {
+            beersList.sortedBy { it.name }
+        } else {
+            beersList.sortedByDescending { it.name }
+        }
     }
 }

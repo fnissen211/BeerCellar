@@ -75,6 +75,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
             BeerList(
                 beers = beers,
                 errorMessage = "",
+                sortByAbv = { bool -> BeerRepositoryProvider.instance.sortBeersAbv(bool)},
+                sortByName = {bool -> BeerRepositoryProvider.instance.sortBeersName(bool)},
                 onItemClick = { beer -> navController.navigate(NavRoutes.BeerDetails.route + "/${beer.id}") },
                 onItemDelete = { beer -> BeerRepositoryProvider.instance.deleteBeer(beer.id)},
                 singOut = {
