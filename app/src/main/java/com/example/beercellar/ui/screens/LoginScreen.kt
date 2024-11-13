@@ -44,10 +44,9 @@ fun LoginScreen(
         navigateToHome()
     }
 
-    val emailStart = "test@test.com" // TODO remove starting email
-    val passwordStart = "testtest" // TODO remove starting password
-    var email by remember { mutableStateOf(emailStart) }
-    var password by remember { mutableStateOf(passwordStart) }
+
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var emailIsError by remember { mutableStateOf(false) }
     var passwordIsError by remember { mutableStateOf(false) }
     var showPassword by remember { mutableStateOf(false) }
