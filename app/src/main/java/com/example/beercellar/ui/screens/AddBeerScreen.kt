@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,6 +33,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.beercellar.data.model.Beer
+import com.example.beercellar.models.AuthenticationViewModel
+import com.example.beercellar.models.AuthenticationViewModelProvider
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -62,6 +65,8 @@ fun AddBeerScreen(
         Column(modifier = modifier.padding(innerPadding)) {
             val orientation = LocalConfiguration.current.orientation
             val isPortrait = orientation == Configuration.ORIENTATION_PORTRAIT
+            var userEmail by remember { mutableStateOf(AuthenticationViewModelProvider.instance.user?.email ?: "") }
+
             if (isPortrait) {
                 OutlinedTextField(onValueChange = { name = it },
                     value = name,
@@ -73,11 +78,13 @@ fun AddBeerScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = "Abv") })
-                OutlinedTextField(onValueChange = { user = it },
+                OutlinedTextField(
                     value = user,
+                    onValueChange = { user = it },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "User") })
+                    label = { Text(text = "User") }
+                )
                 OutlinedTextField(onValueChange = { brewery = it },
                     value = brewery,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -119,11 +126,15 @@ fun AddBeerScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.weight(1f),
                         label = { Text(text = "Abv") })
-                    OutlinedTextField(onValueChange = { user = it },
-                        value = user,
+
+                    OutlinedTextField(
+                        value = userEmail,  // Step 3: Use the mutable state variable for `value`
+                        onValueChange = { userEmail = it },  // Update the state variable on user input
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                         modifier = Modifier.weight(1f),
-                        label = { Text(text = "User") })
+                        label = { Text(text = "User") }
+                    )
+
                     OutlinedTextField(onValueChange = { brewery = it },
                         value = brewery,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -162,8 +173,9 @@ fun AddBeerScreen(
                         volume.toDoubleOrNull() != null &&
                         howMany != null &&
                         pictureUrl.isNotBlank()
+
                     ) {
-                        addBeer(Beer(name,brewery,name,style,abv.toDouble(),volume.toDouble(),pictureUrl,howMany))
+                        addBeer(Beer(user,brewery,name,style,abv.toDouble(),volume.toDouble(),pictureUrl,howMany))
                         navigateBack()
                     } else {
                         Log.d("BeerDetails", "Please fill in all fields correctly")

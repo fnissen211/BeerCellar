@@ -47,7 +47,7 @@ class ExampleInstrumentedTest {
 
         rule.onNodeWithText("Name").performTextInput("Test Beer")
         rule.onNodeWithText("Abv").performTextInput("100.0")
-        rule.onNodeWithText("User").performTextInput("Test user")
+        rule.onNodeWithText("User").performTextInput("wow@home.com")
         rule.onNodeWithText("Brewery").performTextInput("Test Brewery")
         rule.onNodeWithText("Style").performTextInput("Test style")
         rule.onNodeWithText("Volume").performTextInput("100.0")

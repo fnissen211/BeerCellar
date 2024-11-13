@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,10 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,7 +36,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.beercellar.data.model.Beer
-import com.example.beercellar.models.AuthenticationViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +46,7 @@ fun BeerList(
     onAdd: () -> Unit = {},
     sortByName: (up: Boolean) -> Unit = {},
     sortByAbv: (up: Boolean) -> Unit = {},
+    sortByUser: (up: Boolean) -> Unit = {},
     singOut: () -> Unit = {}
 ){
     Scaffold(
@@ -79,7 +75,8 @@ fun BeerList(
             sortByAbv = sortByAbv,
             onBeerSelected = onItemClick,
             onBeerDeleted = onItemDelete,
-            addNewBeer = onAdd
+            addNewBeer = onAdd,
+            sortByUser = sortByUser
         )
     }
 }
@@ -90,6 +87,7 @@ fun BeerListPanel(
     modifier: Modifier = Modifier,
     sortByName: (up: Boolean) -> Unit,
     sortByAbv: (up: Boolean) -> Unit,
+    sortByUser: (up: Boolean) -> Unit,
     onBeerSelected: (Beer) -> Unit,
     onBeerDeleted: (Beer) -> Unit,
     addNewBeer: () -> Unit
@@ -99,8 +97,11 @@ fun BeerListPanel(
         val nameDown = "Name \u2193"
         val abvUp = "Abv \u2191"
         val abvDown = "Abv \u2193"
+        val userUp = "User \u2191"
+        val userDown = "User \u2193"
         var sortNameAscending by remember { mutableStateOf(true) }
         var sortAbvAscending by remember { mutableStateOf(true) }
+        var showUserBeer by remember { mutableStateOf(true) }
 
         Row {
             OutlinedButton(onClick = {
@@ -115,6 +116,14 @@ fun BeerListPanel(
             }) {
                 Text(text = if (sortAbvAscending) abvDown else abvUp)
             }
+
+            OutlinedButton(onClick = {
+                sortByUser(showUserBeer)
+                showUserBeer = !showUserBeer
+            }) {
+                Text(text = if (showUserBeer) userDown else userUp)
+            }
+
             OutlinedButton(onClick = { addNewBeer() }) {
                 Text(text = "Add beer")
             }
@@ -122,13 +131,13 @@ fun BeerListPanel(
         val orientation = LocalConfiguration.current.orientation
         val columns = if (orientation == Configuration.ORIENTATION_PORTRAIT) 1 else 2
 
-        LazyVerticalGrid (columns = GridCells.Fixed(columns)) {
+        LazyVerticalGrid(columns = GridCells.Fixed(columns)) {
             items(beers) { beer ->
                 BeerItem(
                     beer = beer,
                     modifier = Modifier,
                     onItemClick = onBeerSelected,
-                    onItemDelete = onBeerDeleted
+                    onItemDelete = onBeerDeleted,
                 )
             }
         }

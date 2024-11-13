@@ -94,7 +94,7 @@ fun LoginScreen(
                     emailIsError = false
                 }
                 password = password.trim()
-                if (password.isEmpty()) {
+                if (password.isEmpty() || password.length < 6) {
                     passwordIsError = true
                     return@Button
                 } else {

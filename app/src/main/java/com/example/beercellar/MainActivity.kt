@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,7 +24,6 @@ import com.example.beercellar.ui.screens.CreateAccountScreen
 import com.example.beercellar.ui.screens.LoginScreen
 import com.example.beercellar.ui.screens.BeerDetails
 import com.example.beercellar.ui.theme.BeerCellarTheme
-import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +72,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
             BeerList(
                 beers = beers,
                 sortByAbv = { bool -> BeerRepositoryProvider.instance.sortBeersAbv(bool)},
-                sortByName = {bool -> BeerRepositoryProvider.instance.sortBeersName(bool)},
+                sortByName = { bool -> BeerRepositoryProvider.instance.sortBeersName(bool)},
+                sortByUser = { bool -> BeerRepositoryProvider.instance.sortBeersUser(bool)},
                 onItemClick = { beer -> navController.navigate(NavRoutes.BeerDetails.route + "/${beer.id}") },
                 onItemDelete = { beer -> BeerRepositoryProvider.instance.deleteBeer(beer.id)},
                 singOut = {

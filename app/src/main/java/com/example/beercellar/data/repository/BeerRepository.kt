@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.example.beercellar.BeerRepositoryProvider
 import com.example.beercellar.data.model.Beer
+import com.example.beercellar.models.AuthenticationViewModelProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
@@ -140,6 +141,21 @@ class BeerRepository {
             beersList.sortedBy { it.name }
         } else {
             beersList.sortedByDescending { it.name }
+        }
+    }
+
+    private var allBeersList: List<Beer> = emptyList()
+    fun sortBeersUser(selected: Boolean) {
+        if (allBeersList.isEmpty()) {
+            allBeersList = BeerRepositoryProvider.instance.beers.value ?: emptyList()
+        }
+
+        val currentUserEmail = AuthenticationViewModelProvider.instance.user?.email
+
+        BeerRepositoryProvider.instance.beers.value = if (selected) {
+            allBeersList.filter { it.user == currentUserEmail }
+        } else {
+            allBeersList
         }
     }
 }

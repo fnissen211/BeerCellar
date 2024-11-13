@@ -41,7 +41,7 @@ fun BeerDetails(
     var style by remember { mutableStateOf(beer.style) }
     var pictureUrl by remember { mutableStateOf(beer.pictureUrl) }
     var howMany by remember { mutableStateOf(beer.howMany.toString()) }
-    var user by remember { mutableStateOf(beer.user) }
+    var user by remember { mutableStateOf(beer.user ?: "") }
 
 
     Scaffold (
@@ -65,6 +65,12 @@ fun BeerDetails(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Name") })
+
+            OutlinedTextField(onValueChange = { user = it },
+                value = user,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "User") })
 
             OutlinedTextField(onValueChange = { style = it },
                 value = style,
@@ -90,13 +96,6 @@ fun BeerDetails(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "How many?") })
 
-            if (pictureUrl != null) {
-                OutlinedTextField(onValueChange = { pictureUrl = it },
-                    value = pictureUrl,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Picture") })
-            }
 
             Row(
                 modifier = modifier.fillMaxSize(),
