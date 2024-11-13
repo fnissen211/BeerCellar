@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -47,7 +48,7 @@ fun AddBeerScreen(
     var style by rememberSaveable { mutableStateOf("") }
     var volume by rememberSaveable { mutableStateOf("") }
     var pictureUrl by rememberSaveable { mutableStateOf("") }
-    var howMany by rememberSaveable { mutableStateOf(0) }
+    var howMany by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(modifier = modifier.fillMaxSize(),
         topBar = {

@@ -46,13 +46,11 @@ import com.example.beercellar.models.AuthenticationViewModel
 @Composable
 fun BeerList(
     beers: List<Beer>,
-    errorMessage: String,
     onItemClick: (Beer) -> Unit,
     onItemDelete: (Beer) -> Unit,
     onAdd: () -> Unit = {},
     sortByName: (up: Boolean) -> Unit = {},
     sortByAbv: (up: Boolean) -> Unit = {},
-    filterByTitle: (String) -> Unit = {},
     singOut: () -> Unit = {}
 ){
     Scaffold(
@@ -77,12 +75,10 @@ fun BeerList(
         BeerListPanel(
             beers = beers,
             modifier = Modifier.padding(innerPadding),
-            errorMessage = errorMessage,
             sortByName = sortByName,
             sortByAbv = sortByAbv,
             onBeerSelected = onItemClick,
             onBeerDeleted = onItemDelete,
-            onFilterByTitle = filterByTitle,
             addNewBeer = onAdd
         )
     }
@@ -92,12 +88,10 @@ fun BeerList(
 fun BeerListPanel(
     beers: List<Beer>,
     modifier: Modifier = Modifier,
-    errorMessage: String,
     sortByName: (up: Boolean) -> Unit,
     sortByAbv: (up: Boolean) -> Unit,
     onBeerSelected: (Beer) -> Unit,
     onBeerDeleted: (Beer) -> Unit,
-    onFilterByTitle: (String) -> Unit,
     addNewBeer: () -> Unit
     ) {
     Column(modifier = modifier) {
@@ -107,21 +101,6 @@ fun BeerListPanel(
         val abvDown = "Abv \u2193"
         var sortNameAscending by remember { mutableStateOf(true) }
         var sortAbvAscending by remember { mutableStateOf(true) }
-        var titleFragment by remember { mutableStateOf("") }
-
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = titleFragment,
-                onValueChange = { titleFragment = it },
-                label = { Text("Filter by name") },
-                modifier = Modifier.weight(1f)
-            )
-            Button(onClick = { onFilterByTitle(titleFragment) },
-                modifier = Modifier.padding(8.dp)) {
-                Text("Filter")
-            }
-        }
 
         Row {
             OutlinedButton(onClick = {
@@ -206,7 +185,5 @@ fun BeerListPreview() {
         onItemDelete = {},
         sortByName = {},
         sortByAbv = {},
-        filterByTitle = {},
-        errorMessage = "Some error message"
     )
 }

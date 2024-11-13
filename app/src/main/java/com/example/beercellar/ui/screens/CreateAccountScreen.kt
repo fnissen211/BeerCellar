@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser
 fun CreateAccountScreen(
     modifier: Modifier = Modifier,
     user: FirebaseUser? = null,
-    message: String = "",
     register: (email: String, password: String) -> Unit = { _, _ -> },
     navigateToHome: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {}

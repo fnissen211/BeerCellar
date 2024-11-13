@@ -57,7 +57,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
             LoginScreen(
                 modifier,
                 user = authenticationViewModel.user,
-                message = authenticationViewModel.message,
                 signIn = { email, password -> authenticationViewModel.signIn(email, password) },
                 navigateToHome = { navController.navigate(NavRoutes.Home.route) },
                 navigateToCreateAccount = {navController.navigate(NavRoutes.CreateAcc.route) }
@@ -74,7 +73,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
         composable(NavRoutes.Home.route) {
             BeerList(
                 beers = beers,
-                errorMessage = "",
                 sortByAbv = { bool -> BeerRepositoryProvider.instance.sortBeersAbv(bool)},
                 sortByName = {bool -> BeerRepositoryProvider.instance.sortBeersName(bool)},
                 onItemClick = { beer -> navController.navigate(NavRoutes.BeerDetails.route + "/${beer.id}") },
